@@ -4,9 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Runtime.Serialization.Formatters.Binary;
-//Step 1: In Solution Explorer right click on project and go to 'Add Reference'. 
-//Step 2: Click on System.Runtime.Serialization.Formatters.Soap under.NET tab and click OK.
-using System.Runtime.Serialization.Formatters.Soap;
 using System.Xml.Serialization;
 using System.IO;
 
@@ -69,9 +66,6 @@ namespace Modern_laba3
                 Console.WriteLine(new string('_', 7) + " BINARY " + new string('_', 7));
                 Serialize(new BinaryFormatter(), binaryPath, crewList);
                 Deserialize(new BinaryFormatter(), binaryPath);
-                Console.WriteLine(new string('_', 7) + " SOAP " + new string('_', 7));
-                Serialize(new SoapFormatter(), soapPath, crewList);
-                Deserialize(new SoapFormatter(), soapPath);
                 Console.ReadKey();
             } 
             menu();
@@ -297,7 +291,7 @@ namespace Modern_laba3
 
         static void Serialize(dynamic serializer, string path, List<Crew> crewList)
         {
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(path, FileMode.Create))
             {
                 serializer.Serialize(fs, crewList);
             }
@@ -305,7 +299,7 @@ namespace Modern_laba3
 
         static void Deserialize(dynamic serializer, string path)
         {
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(path, FileMode.Open))
             {
                 var tmpCrewList = (List<Crew>)serializer.Deserialize(fs);
                 foreach (Crew tmp in tmpCrewList)
